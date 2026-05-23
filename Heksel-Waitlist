@@ -1,0 +1,3 @@
+var SUPABASE_URL = 'https://teu-projeto.supabase.co'; 
+var SUPABASE_ANON_KEY = 'sb_publishable_ZVnJ_Izm2CP25kR70Pwyxg_9SHCgrGx'; 
+
