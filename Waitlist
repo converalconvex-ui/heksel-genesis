@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lista de Espera — HEKSEL GENESIS</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: rgba(255,255,255,0.1);
+    --text: #f0efe8;
+    --muted: rgba(240,239,232,0.45);
+    --danger: #E24B4A;
+    --success: #1D9E75;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .waitlist { width: 100%; max-width: 460px; }
+
+  .wl-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .wl-heading {
+    font-size: clamp(28px, 5vw, 38px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .wl-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .wl-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+  }
+
+  .wl-stat {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+  }
+
+  .wl-stat-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .wl-stat-value {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    transition: all 0.3s ease;
+  }
+
+  .wl-stat-value.bump {
+    transform: scale(1.15);
+    color: #1D9E75;
+  }
+
+  .wl-progress-wrap { margin-bottom: 1.75rem; }
+
+  .wl-progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .wl-progress-fill {
+    height: 100%;
+    background: var(--text);
+    border-radius: 999px;
+    transition: width 0.6s ease;
+  }
+
+  .wl-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .wl-divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .wl-form { display: flex; flex-direction: column; gap: 10px; }
+
+  .wl-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .wl-input::placeholder { color: var(--muted); }
+  .wl-input:focus { border-color: rgba(255,255,255,0.35); }
+  .wl-input.error { border-color: var(--danger); }
+
+  .wl-btn {
+    width: 100%;
+    padding: 13px;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    margin-top: 2px;
+  }
+
+  .wl-btn:hover { opacity: 0.88; }
+  .wl-btn:active { transform: scale(0.98); }
+  .wl-btn:disabled { opacity: 0.35; cursor: default; }
+
+  .wl-success {
+    display: none;
+    padding: 1rem 0 0.5rem;
+    text-align: center;
+  }
+
+  .wl-success-icon {
+    font-size: 36px;
+    margin-bottom: 0.75rem;
+    color: var(--success);
+  }
+
+  .wl-success-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .wl-success-pos {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .wl-success-redirect {
+    font-size: 13px;
+    color: var(--success);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  .wl-share { font-size: 13px; color: var(--muted); text-align: center; }
+
+  .wl-share-link {
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .wl-heading { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="waitlist" aria-label="Lista de espera Heksel Genesis">
+
+  <p class="wl-eyebrow">Drop 01 — Edição limitada</p>
+  <h1 class="wl-heading">Lista de espera</h1>
+  <p class="wl-sub">Garanta seu acesso antecipado ao lançamento da Heksel Genesis antes que as vagas se esgotem.</p>
+
+  <div class="wl-stats">
+    <div class="wl-stat">
+      <p class="wl-stat-label">Na fila agora</p>
+      <p class="wl-stat-value" id="queue-count">—</p>
+    </div>
+    <div class="wl-stat">
+      <p class="wl-stat-label">Vagas restantes</p>
+      <p class="wl-stat-value" id="slots-left">—</p>
+    </div>
+  </div>
+
+  <div class="wl-progress-wrap">
+    <div class="wl-progress-bar">
+      <div class="wl-progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+    <div class="wl-progress-meta">
+      <span>Capacidade da lista</span>
+      <span id="progress-pct">—</span>
+    </div>
+  </div>
+
+  <hr class="wl-divider" />
+
+  <div id="form-area">
+    <div class="wl-form">
+      <input class="wl-input" type="text"  id="inp-name"  placeholder="Seu nome"            autocomplete="name" />
+      <input class="wl-input" type="email" id="inp-email" placeholder="Seu e-mail"           autocomplete="email" />
+      <input class="wl-input" type="tel"   id="inp-phone" placeholder="WhatsApp (opcional)"  autocomplete="tel" />
+      <button class="wl-btn" id="submit-btn" onclick="handleSubmit()">Garantir meu acesso</button>
+    </div>
+  </div>
+
+  <div class="wl-success" id="success-area">
+    <div class="wl-success-icon">✓</div>
+    <p class="wl-success-title">Você está na fila!</p>
+    <p class="wl-success-pos" id="position-text">Sua posição: —</p>
+    <p class="wl-success-redirect">Entrando no grupo VIP em <span id="redirect-count">3</span>s...</p>
+    <p class="wl-share">Não redirecionou?
+      <a class="wl-share-link" href="https://chat.whatsapp.com/G5q3H5MuJSyCmdAOEcf78T?s=sh&p=a&mlu=2" target="_blank" rel="noopener">clique aqui</a>
+    </p>
+  </div>
+
+</section>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+//  CONTADOR REAL — usa Supabase (gratuito) para persistir entre todos os
+//  visitantes. Siga o README no final do arquivo para configurar em 3 minutos.
+//
+//  Se ainda não configurou o Supabase, o sistema cai para localStorage
+//  (funciona só por dispositivo, mas não zera enquanto o usuário não limpar
+//  o cache).
+// ─────────────────────────────────────────────────────────────────────────────
+
+  var TOTAL_SLOTS = 3000;
+  var WA_URL = 'https://chat.whatsapp.com/G5q3H5MuJSyCmdAOEcf78T?s=sh&p=a&mlu=2';
+
+  // ── Supabase config — substitua pelos seus valores ───────────────────────
+  var SUPABASE_URL = '';        // ex: 'https://xyzxyz.supabase.co'
+  var SUPABASE_ANON_KEY = '';   // ex: 'eyJhbGci...'
+  var SUPABASE_TABLE = 'waitlist';
+  // ─────────────────────────────────────────────────────────────────────────
+
+  var useSupabase = SUPABASE_URL !== '' && SUPABASE_ANON_KEY !== '';
+
+  // ── Fallback localStorage ─────────────────────────────────────────────────
+  var LS_KEY = 'heksel_waitlist_count';
+
+  function lsGetCount() {
+    var v = parseInt(localStorage.getItem(LS_KEY), 10);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function lsIncrement() {
+    var n = lsGetCount() + 1;
+    localStorage.setItem(LS_KEY, n);
+    return n;
+  }
+
+  // ── Supabase helpers ──────────────────────────────────────────────────────
+  function sbHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+    };
+  }
+
+  function sbFetch(path, opts) {
+    return fetch(SUPABASE_URL + '/rest/v1/' + path, Object.assign({ headers: sbHeaders() }, opts));
+  }
+
+  async function getCount() {
+    if (!useSupabase) return lsGetCount();
+    try {
+      var res = await sbFetch(SUPABASE_TABLE + '?select=id', {
+        headers: Object.assign(sbHeaders(), { 'Prefer': 'count=exact', 'Range': '0-0' })
+      });
+      var total = res.headers.get('content-range');  // ex: "0-0/42"
+      if (total) return parseInt(total.split('/')[1], 10) || 0;
+      return 0;
+    } catch(e) { return lsGetCount(); }
+  }
+
+  async function insertEntry(name, email, phone) {
+    if (!useSupabase) return lsIncrement();
+    try {
+      await sbFetch(SUPABASE_TABLE, {
+        method: 'POST',
+        body: JSON.stringify({ name: name, email: email, phone: phone || null })
+      });
+      return await getCount();
+    } catch(e) { return lsIncrement(); }
+  }
+
+  // ── UI ────────────────────────────────────────────────────────────────────
+  function fmt(n) { return n.toLocaleString('pt-BR'); }
+
+  function updateStats(count) {
+    var slots = Math.max(0, TOTAL_SLOTS - count);
+    var pct   = Math.min(100, Math.round((count / TOTAL_SLOTS) * 100));
+
+    document.getElementById('queue-count').textContent = fmt(count);
+    document.getElementById('slots-left').textContent  = fmt(slots);
+    document.getElementById('progress-pct').textContent = pct + '%';
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    return count;
+  }
+
+  function bumpCounter() {
+    var el = document.getElementById('queue-count');
+    el.classList.add('bump');
+    setTimeout(function() { el.classList.remove('bump'); }, 400);
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────────
+  async function handleSubmit() {
+    var nameEl  = document.getElementById('inp-name');
+    var emailEl = document.getElementById('inp-email');
+    var phoneEl = document.getElementById('inp-phone');
+    var name    = nameEl.value.trim();
+    var email   = emailEl.value.trim();
+    var phone   = phoneEl.value.trim();
+
+    nameEl.classList.remove('error');
+    emailEl.classList.remove('error');
+
+    var valid = true;
+    if (!name)  { nameEl.classList.add('error');  valid = false; }
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      emailEl.classList.add('error'); valid = false;
+    }
+    if (!valid) return;
+
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Aguarde...';
+
+    // Salva e busca contagem atualizada
+    var newCount = await insertEntry(name, email, phone);
+
+    updateStats(newCount);
+    bumpCounter();
+
+    document.getElementById('form-area').style.display   = 'none';
+    document.getElementById('success-area').style.display = 'block';
+    document.getElementById('position-text').textContent  = 'Sua posição: #' + fmt(newCount);
+
+    // Contagem regressiva → WhatsApp
+    var secs    = 3;
+    var countEl = document.getElementById('redirect-count');
+    countEl.textContent = secs;
+    var timer = setInterval(function() {
+      secs--;
+      countEl.textContent = secs;
+      if (secs <= 0) { clearInterval(timer); window.location.href = WA_URL; }
+    }, 1000);
+  }
+
+  // ── Enter key ─────────────────────────────────────────────────────────────
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && document.getElementById('form-area').style.display !== 'none') {
+      handleSubmit();
+    }
+  });
+
+  // ── Init: carrega contagem atual ao abrir a página ────────────────────────
+  getCount().then(function(n) { updateStats(n); });
+</script>
+
+<!--
+════════════════════════════════════════════════════════════════════
+  COMO CONFIGURAR O CONTADOR REAL (Supabase — grátis, 3 minutos)
+════════════════════════════════════════════════════════════════════
+
+  1. Acesse https://supabase.com e crie uma conta gratuita
+  2. Crie um novo projeto
+  3. No menu lateral, vá em "SQL Editor" e execute:
+
+       CREATE TABLE waitlist (
+         id         bigserial PRIMARY KEY,
+         name       text NOT NULL,
+         email      text NOT NULL,
+         phone      text,
+         created_at timestamptz DEFAULT now()
+       );
+
+       ALTER TABLE waitlist ENABLE ROW LEVEL SECURITY;
+
+       CREATE POLICY "insert_public" ON waitlist
+         FOR INSERT WITH CHECK (true);
+
+       CREATE POLICY "count_public" ON waitlist
+         FOR SELECT USING (true);
+
+  4. Vá em Settings → API e copie:
+       - Project URL  → cole em SUPABASE_URL
+       - anon key     → cole em SUPABASE_ANON_KEY
+
+  5. Faça upload do arquivo no GitHub — pronto!
+     O contador agora é compartilhado entre TODOS os visitantes em tempo real.
+
+  Sem Supabase? O sistema usa localStorage como fallback (contador por dispositivo).
+════════════════════════════════════════════════════════════════════
+-->
+
+</body>
+</html>
