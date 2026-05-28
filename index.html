@@ -21,210 +21,144 @@
             color: #fff;
             font-family: 'Lexend', sans-serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
         }
 
-        .topo-site {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px 20px 20px;
+        .founder-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
             background: transparent;
-            z-index: 600;
+            font-family: 'Syncopate';
+            font-size: 12px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-transform: uppercase;
+        }
+
+        .cta-button:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 30px var(--cyan);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .social-card {
+            height: 500px;
             position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
         }
 
-        .logo-topo {
-            width: 120px;
-            height: auto;
-            object-fit: contain;
-            filter: drop-shadow(0 0 12px #00ffff) drop-shadow(0 0 20px #ff00ff);
+        .social-card img, .social-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .scan-line {
-            position: fixed; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(155,48,255,0.3), rgba(0,245,255,0.3), transparent);
-            z-index: 9998; pointer-events: none; animation: scan 10s linear infinite;
-        }
-        @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
-
-        nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-            padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
-            background: linear-gradient(to bottom, rgba(6,6,8,0.95), transparent);
+        .video-label {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Syncopate';
+            font-size: 10px;
+            letter-spacing: 2px;
+            z-index: 2;
         }
 
-        .nav-logo { font-family: 'Syncopate', sans-serif; font-weight: 700; letter-spacing: 0.5em; color: #fff; }
-
-        .hero {
-            position: relative; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
-            align-items: center; padding: 5rem 10% 0 10%; gap: 40px;
+        .click-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            transition: 0.3s;
         }
 
-        .hero-title {
-            font-family: 'Syncopate', monospace; font-size: clamp(2.5rem, 5vw, 5rem);
-            font-weight: 700; line-height: 0.9; margin: 1.5rem 0;
-        }
-
-        .line-gradient {
-            background: linear-gradient(135deg, #ff00cc, #9b30ff, #00f5ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic;
-            color: rgba(255,255,255,0.4); margin-bottom: 2.5rem;
-        }
-
-        .shoe-container { position: relative; display: flex; justify-content: center; align-items: center; }
-        
-        .shoe-img {
-            width: 100%; max-width: 600px; height: auto; z-index: 2;
-            filter: drop-shadow(0 0 30px rgba(155,48,255,0.4));
-            animation: float 6s ease-in-out infinite;
-            border-radius: 20px;
-        }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        .btn-primary {
-            padding: 1.2rem 2.5rem; background: linear-gradient(135deg, #9b30ff, #ff00cc);
-            border: none; color: #fff; font-family: 'Syncopate', sans-serif; font-size: 0.6rem;
-            letter-spacing: 0.3em; cursor: pointer; text-transform: uppercase; font-weight: 700;
-            transition: 0.4s;
-        }
-        .btn-primary:hover { box-shadow: 0 0 30px var(--purple); transform: scale(1.05); }
-
-        .stats { display: flex; gap: 40px; margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
-        .stat-item { font-family: 'Syncopate'; }
-        .stat-num { display: block; font-size: 1.5rem; font-weight: 700; }
-        .stat-label { font-size: 8px; color: var(--cyan); letter-spacing: 3px; }
-
-        /* CENTRAL DO FUNDADOR E SOCIAL GRID */
-        .founder-section { padding: 80px 10%; text-align: center; background: #000; }
-        .founder-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 60px; }
-        .founder-photo { 
-            width: 120px; height: 120px; border-radius: 50%; 
-            border: 2px solid var(--cyan); margin-bottom: 15px; object-fit: cover; 
-        }
-        .founder-name { font-family: 'Syncopate'; font-size: 24px; margin-bottom: 5px; }
-        .founder-tag { background: #111; padding: 5px 15px; border-radius: 20px; font-size: 10px; color: #888; margin-bottom: 20px; }
-        
-        .btn-founder { 
-            padding: 12px 30px; border: 1px solid #25D366; color: #25D366; 
-            text-decoration: none; border-radius: 50px; font-family: 'Syncopate'; 
-            font-size: 10px; transition: 0.3s; 
-        }
-        .btn-founder:hover { background: #25D366; color: #000; box-shadow: 0 0 20px rgba(37, 211, 102, 0.4); }
-
-        .social-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; }
-        .social-card { position: relative; background: #080808; border-radius: 15px; overflow: hidden; border: 1px solid #111; transition: 0.4s; }
-        .social-card:hover { transform: translateY(-10px); border-color: var(--cyan); }
-        .video-ad { width: 100%; height: 450px; object-fit: cover; display: block; }
-        .click-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 10; }
-
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 8rem; }
-            .hero-subtitle { margin: 0 auto 2rem auto; }
-            .stats { justify-content: center; }
-        }
+        .social-card:hover .click-overlay { background: transparent; }
     </style>
 </head>
 <body>
 
-<div class="scan-line"></div>
+    <header style="padding: 40px; text-align: center;">
+        <img src="Logo.png" alt="HEKSEL" style="height: 30px; opacity: 0.8;">
+    </header>
 
-<nav>
-    <div class="nav-logo">HEKSEL</div>
-    <div style="font-family: 'Syncopate'; font-size: 9px; color: var(--cyan); letter-spacing: 2px;">NEO-KAI // 2026</div>
-</nav>
+    <section style="text-align: center; padding: 60px 20px;">
+        <img src="tenis.png" alt="NEO-KAI 01" style="max-width: 100%; height: auto; max-height: 500px;">
+        <h1 style="font-family: 'Syncopate'; font-size: clamp(2rem, 8vw, 5rem); margin-top: 20px; letter-spacing: -2px;">NEO-KAI 01</h1>
+    </section>
 
-<header class="topo-site">
-    <img src="Logo.png" alt="Logo Heksel" class="logo-topo">
-</header>
+    <section style="padding: 80px 10%; text-align: center;">
+        <p style="font-family: 'Syncopate'; color: var(--cyan); letter-spacing: 5px; font-size: 12px; margin-bottom: 20px;">LANÇAMENTO MUNDIAL EM MAIO/2026</p>
+        <h2 style="font-family: 'Syncopate'; font-size: clamp(3rem, 10vw, 8rem); font-weight: 100; opacity: 0.8;">14:15:00</h2>
+    </section>
 
-<section class="hero">
-    <div class="hero-content">
-        <div style="border: 1px solid var(--cyan); display: inline-block; padding: 4px 10px; font-size: 8px; font-family: 'Syncopate'; color: var(--cyan);">
-            DROP 01 — EDIÇÃO LIMITADA
-        </div>
-        
-        <h1 class="hero-title">
-            HEKSEL<br><span class="line-gradient">GENESIS</span>
-        </h1>
-
-        <p class="hero-subtitle">
-            A união brutal entre o design carioca e a estética de um futuro que ainda não aconteceu.
+    <section style="background: #09090b; padding: 100px 5%; text-align: center;">
+        <img src="hafavilha.png" alt="Guilherme" class="founder-photo">
+        <h3 style="font-family: 'Syncopate'; font-size: 14px; color: var(--cyan); margin-bottom: 10px;">GUILHERME HAFAVILHA</h3>
+        <p style="font-family: 'Cormorant Garamond'; font-size: 24px; font-style: italic; max-width: 700px; margin: 0 auto 40px; opacity: 0.8;">
+            "A HEKSEL não é apenas uma marca, é a materialização do futuro nos seus pés. O Neo-Kai 01 é apenas o começo da revolução."
         </p>
-
-        <a href="waitlist.html" style="text-decoration: none;">
-            <button class="btn-primary">GARANTIR MEU ACESSO</button>
-        </a>
-
-        <div class="stats">
-            <div class="stat-item">
-                <span class="stat-num">EM BREVE</span>
-                <span class="stat-label">INDISPONÍVEL</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">BRASIL TODO</span>
-                <span class="stat-label">ORIGEM</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">VIP PERSONALIZADO</span>
-                <span class="stat-label">MODELO</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="shoe-container">
-        <img src="tenis.png" alt="Heksel Genesis Shoe" class="shoe-img">
-        <div style="position: absolute; width: 80%; height: 80%; background: radial-gradient(circle, rgba(155,48,255,0.15) 0%, transparent 70%); z-index: 1;"></div>
-    </div>
-</section>
-
-<section style="padding: 100px 10%; text-align: center; background: #0c0c10;">
-    <p style="font-family: 'Syncopate'; color: var(--cyan); letter-spacing: 10px; font-size: 10px; margin-bottom: 20px;">CONTAGEM REGRESSIVA</p>
-    <h2 style="font-family: 'Syncopate'; font-size: clamp(3rem, 10vw, 8rem); font-weight: 100; opacity: 0.8;">14:15:00</h2>
-    <p style="color: #444; font-size: 12px; margin-top: 20px; letter-spacing: 5px;">LANÇAMENTO MUNDIAL EM MAIO/2026</p>
-</section>
-
-<section class="founder-section">
-    <div class="founder-header">
-        <img src="hafavilha.jpg" alt="Guilherme" class="founder-photo"> 
-        <h2 class="founder-name">Guilherme</h2>
-        <div class="founder-tag">🥷 Heksel Founder</div>
         
-        <a href="https://wa.me/5553991855262?text=Olá,%20Hafa!%20Vi%20o%20projeto%20da%20HEKSEL%20no%20site%20oficial." 
-                   <section style="padding: 50px 5%; background: #060608;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto;">
+        <div style="margin-bottom: 60px;">
+            <a href="https://wa.me/5511952264585" target="_blank" class="cta-button" style="text-decoration: none; display: inline-block;">
+                FALAR COM O FUNDADOR
+            </a>
+        </div>
+
+        <div class="social-grid">
             
-            <div class="social-card" style="height: 450px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="social-card">
                 <a href="https://www.tiktok.com/@hafavilha" target="_blank">
-                    <img src="tenis.png" alt="Neo-Kai Sneaker" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="tenis.png" alt="Neo-Kai">
                     <div class="click-overlay"></div>
                 </a>
-                <p style="position: absolute; bottom: 0; width: 100%; padding: 15px; font-size: 10px; font-family: 'Syncopate'; color: var(--cyan); background: linear-gradient(transparent, black); margin: 0;">TIKTOK @HAFAVILHA</p>
+                <div class="video-label" style="color: var(--cyan);">TIKTOK @HAFAVILHA</div>
             </div>
 
-            <div class="social-card" style="height: 450px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="social-card">
                 <a href="https://www.instagram.com/p/DY3QC7UzB7v/?igsh=dWFoejdpaTNvZ2Nl" target="_blank">
-                    <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+                    <video autoplay muted loop playsinline>
                         <source src="video-insta.mp4" type="video/mp4">
                     </video>
                     <div class="click-overlay"></div>
                 </a>
-                <p style="position: absolute; bottom: 0; width: 100%; padding: 15px; font-size: 10px; font-family: 'Syncopate'; color: var(--pink); background: linear-gradient(transparent, black); margin: 0;">INSTAGRAM @HAFAVILHA</p>
+                <div class="video-label" style="color: var(--pink);">INSTAGRAM @HAFAVILHA</div>
             </div>
 
-            <div class="social-card" style="height: 450px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="social-card">
                 <a href="https://x.com/i/status/2059987935554830777" target="_blank">
-                    <img src="relogio.png" alt="Heksel Clock" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
+                    <img src="relogio.png" alt="Relógio">
                     <div class="click-overlay"></div>
                 </a>
-                <p style="position: absolute; bottom: 0; width: 100%; padding: 15px; font-size: 10px; font-family: 'Syncopate'; color: #fff; background: linear-gradient(transparent, black); margin: 0;">X (TWITTER) @HAFAVILHA</p>
+                <div class="video-label" style="color: #fff;">X (TWITTER) @HAFAVILHA</div>
             </div>
 
         </div>
     </section>
+
+    <footer style="padding: 60px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p style="font-family: 'Syncopate'; font-size: 10px; opacity: 0.4;">© 2026 HEKSEL GENESIS — TODOS OS DIREITOS RESERVADOS</p>
+    </footer>
+
+</body>
+</html>
